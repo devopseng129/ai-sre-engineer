@@ -102,37 +102,25 @@ python app.py "Payment API returning 500 errors"
 python app.py --interactive
 ```
 
-### 3) Demo mode (great for YouTube recording)
-
-```bash
-python app.py --demo
-```
-
-Show available demo scenarios:
-
-```bash
-python app.py --list-demos
-```
-
-### 4) Use a different model
+### 3) Use a different model
 
 ```bash
 python app.py "Redis timeout in checkout" --model llama3
 ```
 
-### 5) Disable streaming
+### 4) Disable streaming
 
 ```bash
 python app.py "K8s CrashLoopBackOff" --no-stream
 ```
 
-### 6) Preview prompt without calling Ollama
+### 5) Preview prompt without calling Ollama
 
 ```bash
 python app.py "Database errors" --dry-run
 ```
 
-### 7) Save report to markdown
+### 6) Save report to markdown
 
 ```bash
 python app.py "High latency in api-gateway" --save
@@ -161,16 +149,6 @@ reports/*.md
 - `--save`: Save final report to `reports/`
 
 ---
-
-## YouTube recording flow (recommended)
-
-Use this flow for an engaging Episode 02 demo:
-
-1. Start with `--list-demos` to show built-in incidents.
-2. Run `--demo` with streaming ON for live token generation.
-3. Re-run same incident with `--no-stream` to compare UX.
-4. Run with `--model llama3` (or another model) to compare output style.
-5. Finish with `--save` and show generated markdown report.
 
 ---
 
@@ -204,13 +182,5 @@ You can tune:
 
 ---
 
-## Next episode ideas
-
-- Auto-collect Kubernetes logs before analysis
-- Add tool-calling actions (`kubectl`, diagnostics)
-- Build Slack/PagerDuty notification workflow
-- Add RAG using runbooks and postmortems
-
----
 
 Part of the **AI SRE Engineer** learning series.
