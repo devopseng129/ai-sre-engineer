@@ -3,7 +3,7 @@ Building a real-world AI-powered SRE system using modern DevOps + AI + Cloud tec
 
 Architecture Diagram:  Kubernetes AI SRE Monitoring and Remediation Architecture
 
-![alt text](image.png)
+![alt text](../image.png)
 
 # Technology Stack & Tools
 
