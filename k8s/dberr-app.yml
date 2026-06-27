@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dberror-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: app
+        image: busybox
+        command:
+          - sh
+          - -c
+          - |
+            while true; do
+              echo "ERROR: database connection refused"
+              echo "WARNING: retrying connection..."
+              sleep 5
+            done

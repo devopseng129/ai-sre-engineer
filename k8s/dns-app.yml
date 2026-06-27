@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dns-error-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dns
+  template:
+    metadata:
+      labels:
+        app: dns
+    spec:
+      containers:
+      - name: app
+        image: busybox
+        command:
+          - sh
+          - -c
+          - |
+            while true; do
+              wget -qO- http://nonexistent-service || echo "ERROR: DNS resolution failed"
+              sleep 5
+            done

@@ -4,6 +4,8 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
+from log_collector import get_pod_logs
+from log_collector import get_pod_by_app
 
 import ollama
 
@@ -82,6 +84,30 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Save generated analysis to reports/*.md",
     )
+    parser.add_argument(
+    "--pod",
+    help="Fetch logs from Kubernetes pod"
+    )
+
+    parser.add_argument(
+        "--namespace",
+        default="default",
+        help="Kubernetes namespace (default: default)"
+    )
+
+    parser.add_argument(
+        "--tail",
+        type=int,
+        default=50,
+        help="Number of log lines (default: 50)"
+    )
+
+    
+    parser.add_argument(
+        "--app",
+        help="Kubernetes app label (auto-detect pod)"
+    )
+
     return parser.parse_args()
 
 
@@ -96,7 +122,7 @@ def build_prompt(incident: str) -> str:
 
 def print_banner() -> None:
     print("=" * 72)
-    print("  AI DevOps Assistant  |  Episode 02 — Python + Ollama (Local LLM)")
+    print("  AI SRE Engineer  |  Python + Ollama (Local LLM) + Kubernetes")
     print("=" * 72)
 
 
@@ -107,6 +133,35 @@ def show_demo_incidents() -> None:
 
 
 def resolve_incident(args: argparse.Namespace) -> str:
+    if args.app:
+        print(f"\nFinding pod for app: {args.app}")
+
+        pod_name = get_pod_by_app(args.app, args.namespace)
+
+        if not pod_name:
+            raise ValueError("No pod found for given app label")
+
+        print(f"Found pod: {pod_name}")
+
+        logs = get_pod_logs(pod_name, args.namespace, args.tail)
+
+        return f"Kubernetes Logs:\n{logs}"
+
+    if args.pod:
+        print(f"\nFetching logs from pod: {args.pod} (ns: {args.namespace})")
+        logs = get_pod_logs(args.pod, args.namespace, args.tail)
+
+        if not logs:
+            raise ValueError("No logs found for the given pod.")
+
+        print("\nCollected Logs (preview):")
+        print("-" * 60)
+        print(logs[:500])  # preview first 500 chars
+        print("-" * 60)
+
+        return f"Kubernetes Logs:\n{logs}"
+
+    # Existing logic (unchanged)
     if args.demo:
         chosen = random.choice(DEMO_INCIDENTS)
         print(f"\nDemo incident selected: {chosen}")

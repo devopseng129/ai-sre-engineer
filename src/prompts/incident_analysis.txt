@@ -13,7 +13,7 @@ You have expertise in:
 - Databases
 
 
-Analyze this production issue:
+Analyze this production issue or Kubernetes logs:
 
 {incident}
 
